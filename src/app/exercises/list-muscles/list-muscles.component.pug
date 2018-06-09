@@ -1,0 +1,9 @@
+p list-muscles works!
+
+
+ul(*ngIf="muscles$ | async as muscles; else loading")
+  li(*ngFor="let muscle of muscles") {{muscle.name}}
+
+  li(*ngFor="let muscle of muscles") {{muscle.name}}
+
+ng-template(#loading) Loading...
