@@ -17,7 +17,7 @@ import { ExercisesModule } from './exercises';
 
 const routes = [{
   path: '',
-  loadChildren: '/app/exercises'
+  loadChildren: './exercises'
 }]
 
 @NgModule({
