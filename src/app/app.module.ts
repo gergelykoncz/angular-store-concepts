@@ -13,15 +13,16 @@ import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 import { FirebaseModule } from './firebase';
 
-import { ExercisesModule } from './exercises';
+import { EagerComponent } from './eager-component';
+
 
 const routes = [{
-  path: '',
+  path: 'ex',
   loadChildren: './exercises'
-}]
+}, { path: '', component: EagerComponent }]
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, EagerComponent],
   imports: [
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
@@ -34,7 +35,6 @@ const routes = [{
     }),
 
     EffectsModule.forRoot([]),
-    ExercisesModule
   ],
   providers: [],
   bootstrap: [AppComponent]

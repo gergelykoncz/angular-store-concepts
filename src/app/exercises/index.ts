@@ -18,6 +18,6 @@ export const routes = [{
   providers: [ExercisesEffects, ExercisesSelectors, ExerciseService],
   exports: [ListMusclesComponent]
 })
-export class ExercisesModule { }
+export default class ExercisesModule { }
 
 export * from './store';
