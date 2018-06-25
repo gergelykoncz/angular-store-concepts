@@ -1,4 +1,4 @@
-import { ActionReducer } from '@ngrx/store';
+import { ActionReducer, ActionReducerMap } from '@ngrx/store';
 
 import { initialExercisesState, IExercisesState } from './state';
 import * as Actions from './actions';
@@ -22,4 +22,6 @@ const reducer: ActionReducer<IExercisesState> = (state = initialExercisesState, 
   }
 };
 
-export { reducer as Reducer };
+export const Reducers: ActionReducerMap<any> = {
+  exercises: reducer,
+};

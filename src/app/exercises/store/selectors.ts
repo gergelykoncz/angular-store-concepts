@@ -2,15 +2,17 @@ import { Injectable } from '@angular/core';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Store } from '@ngrx/store';
 import { State } from '../../store';
-import { IExercisesState, initialExercisesState, IMuscle, IExercise } from './state';
+import { IExercisesState, IMuscle, IExercise, FEATURE_NAME } from './state';
 import * as LocalActions from './actions';
-import { Observable } from 'rxjs';
-import { map, tap, filter } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, tap, filter, catchError } from 'rxjs/operators';
 
-const selectFeature = createFeatureSelector<IExercisesState>('exercises');
+const selectRoot = createFeatureSelector<State>(FEATURE_NAME);
+const selectFeature = createSelector(selectRoot, (state: any) => state.exercises)
 
 const musclesSelector = createSelector(selectFeature, (state: IExercisesState) => state.muscles);
 const exercisesSelector = createSelector(selectFeature, (state: IExercisesState) => state.exercises);
+const errorSelector = createSelector(selectFeature, (state: IExercisesState) => state.exercises);
 
 @Injectable()
 export class ExercisesSelectors {
@@ -21,6 +23,7 @@ export class ExercisesSelectors {
   getMuscles(): Observable<IMuscle[]> {
     return this._store.select(musclesSelector).pipe(
       tap(data => {
+        console.log('data is', data)
         if (!data) {
           this._store.dispatch(new LocalActions.FetchMuscles());
         }
@@ -36,8 +39,13 @@ export class ExercisesSelectors {
           this._store.dispatch(new LocalActions.FetchExercises());
         }
       }),
-      filter(data => !!data)
+      filter(data => !!data),
+      catchError(e => of(null))
     );
+  }
+
+  getError(): Observable<any> {
+    return this._store.select(errorSelector).pipe(filter(data => !!data))
   }
 
   getExercisesForMuscle(muscle: string): Observable<IExercise[]> {

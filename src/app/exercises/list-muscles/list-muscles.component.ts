@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { share } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import { ExercisesSelectors, IMuscle } from '../store';
-import { coldTimer } from '../../observables/hot-cold-observable';
+import { takeUntil, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-muscles',
@@ -11,26 +10,19 @@ import { coldTimer } from '../../observables/hot-cold-observable';
 })
 export class ListMusclesComponent implements OnInit {
   public muscles$: Observable<IMuscle[]>;
-  constructor(private _exercisesSelectors: ExercisesSelectors) {}
+  public error$: Observable<any>;
+  public counter = 0;
+  public subject$ = new Subject<number>();
+  constructor(private _exercisesSelectors: ExercisesSelectors) { }
 
   ngOnInit() {
     this.muscles$ = this._exercisesSelectors.getMuscles();
+    this.error$ = this._exercisesSelectors.getError();
 
-    // Cold timer calls
-    // coldTimer.subscribe(res => {
-    //   console.log(res);
-    // });
-    // coldTimer.subscribe(res => {
-    //   console.log(res);
-    // });
+    this.subject$.pipe(filter(x => x > 5))
+  }
 
-    const hotTimer = coldTimer.pipe(share());
-
-    hotTimer.subscribe(res => {
-      console.log(res);
-    });
-    hotTimer.subscribe(res => {
-      console.log(res);
-    });
+  buttonClick() {
+    this.subject$.next(this.counter++);
   }
 }

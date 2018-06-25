@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { ExerciseService } from '../service';
 import { IMuscle, IExercise } from './state';
 
-import { mergeMap, switchMap } from 'rxjs/operators';
+import { mergeMap, switchMap, map } from 'rxjs/operators';
 
 import * as LocalActions from './actions';
 
@@ -35,5 +35,5 @@ export class ExercisesEffects {
     })
   );
 
-  constructor(private actions$: Actions, private exerciseService: ExerciseService) {}
+  constructor(private actions$: Actions, private exerciseService: ExerciseService) { }
 }

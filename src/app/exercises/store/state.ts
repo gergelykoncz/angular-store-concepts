@@ -20,3 +20,5 @@ export const initialExercisesState: IExercisesState = {
   muscles: null,
   exercises: null
 };
+
+export const FEATURE_NAME = 'exercises'
